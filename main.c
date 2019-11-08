@@ -56,17 +56,17 @@ int main(int argc,const char *argv[])
 /*====================== End of Parameters Processing ======================*/
 ox_srandom();
 
-player=newgame(&game,player,ch1,ch2,&p1,&p2);
+player=newgame(&game,player,&p1,&p2);
 
 do
 {
 
-	ox_printtable(&p1,&p2,OX_SQUAR,CBLANK);
+	ox_printtable(p1.val,p2.val,ch1,ch2,OX_SQUAR,CBLANK);
 
 	#ifdef _PVP_
-		ch = (player==&p1) ? playerinput(&p1,buff) : playerinput(&p2,buff) ;
+		ch = (player==&p1) ? playerinput(&p1,buff,ch1) : playerinput(&p2,buff,ch2) ;
 	#else
-		ch = (player==&p1) ? ox_ai(&game,&p2,&p1)+'0' : playerinput(&p2,buff) ;
+		ch = (player==&p1) ? ox_ai(&game,&p2,&p1)+'0' : playerinput(&p2,buff,ch2) ;
 	#endif
 
 	
@@ -86,14 +86,14 @@ do
 		
 	else if(ch==K_NEW)
 	{
-		player=newgame(&game,NULL,ch1,ch2,&p1,&p2);continue;
+		player=newgame(&game,NULL,&p1,&p2);continue;
 	}
 
 	if(player==&p1)
-		printf(KEYBARP1,ch,p1.ch,G[1]);
+		printf(KEYBARP1,ch,ch1,G[1]);
 
 	else if(player==&p2)
-		printf(KEYBARP2,G[0],p2.ch,ch);
+		printf(KEYBARP2,G[0],ch2,ch);
 		
 		
 	gameid= player==&p1? ox_gameplay(&game,&p2,&p1,ch-'0') : ox_gameplay(&game,&p1,&p2,ch-'0');
@@ -104,7 +104,7 @@ do
 		case ox_iddraw:
 				index = gameid==ox_idwin?(player==&p1?0:1):2;
 
-				ox_printtable(&p1,&p2,OX_SQUAR,CBLANK);
+				ox_printtable(p1.val,p2.val,ch1,ch2,OX_SQUAR,CBLANK);
 
 				printf(winpos[index],G[index]);
 				
@@ -122,7 +122,7 @@ do
 				{
 					player = player==&p2? &p1:&p2;
 					
-					player=newgame(&game,player,ch1,ch2,&p1,&p2);
+					player=newgame(&game,player,&p1,&p2);
 				}
 				
 				

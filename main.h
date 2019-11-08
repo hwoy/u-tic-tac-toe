@@ -33,15 +33,12 @@ static const char *optstr[]={"P2 get X.","P2 get O (Default).","Custom (Default 
 
 
 
-static void listtest(const unsigned int trilist[NTRI][NTRIELEMENT],unsigned int ntri,unsigned int ntrielement,char ccom,char cyou)
+static void listtest(const unsigned int trilist[NTRI][NTRIELEMENT],unsigned int ntri,unsigned int ntrielement,char ch1,char ch2)
 {
 	unsigned int i,j,k;
-	ox_player p1,p2;
+	unsigned int val1,val2;
 
-	p1.ch=ccom;
-	p2.ch=cyou;
-
-	p2.val=0;
+	val2=0;
 
 	for(i=0;i<ntri;i++)
 	{
@@ -52,8 +49,8 @@ static void listtest(const unsigned int trilist[NTRI][NTRIELEMENT],unsigned int 
 			printf(" %u ",trilist[i][j]);
 		}
 		printf("] = %u\n",k);
-		p1.val=k;
-		ox_printtable(&p1,&p2,OX_SQUAR,CBLANK);
+		val1=k;
+		ox_printtable(val1,val2,ch1,ch2,OX_SQUAR,CBLANK);
 	}
 }
 
@@ -79,17 +76,17 @@ static int showhelp(const char *path,const char *opt[],const char *optstr[])
 	return 1;
 }
 
-static char playerinput(const ox_player *player,char *buff)
+static char playerinput(const ox_player *player,char *buff,char ch)
 {
-	char ch;
+	char tmp;
 	do
 	{
-		printf(TKEY,K_NEW,K_EXIT,player->ch);
-		ch=ox_getch(buff,BSIZE,0);
+		printf(TKEY,K_NEW,K_EXIT,ch);
+		tmp=ox_getch(buff,BSIZE,0);
 			
 	}while(strlen(buff)!=1);
 
-	return ch;
+	return tmp;
 }
 
 #endif

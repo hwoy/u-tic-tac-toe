@@ -166,14 +166,12 @@ unsigned int ox_random (unsigned int min,unsigned int max)
 }
 
 void ox_init(ox_game *game,const void *winlist,const void *trilist,unsigned int nwin,unsigned int nelement,\
-unsigned int ntri,unsigned int ntrielement,char ch1,char ch2,ox_player *p1,ox_player *p2)
+unsigned int ntri,unsigned int ntrielement,ox_player *p1,ox_player *p2)
 {
 	p1->val=0;
-	p1->ch=ch1;
 	p1->indexwin=0;
 
 	p2->val=0;
-	p2->ch=ch2;
 	p2->indexwin=0;
 
 	game->nwin=nwin;

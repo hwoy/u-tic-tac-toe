@@ -33,12 +33,12 @@ static void replacech(char *str,char ch,char rp)
 	}
 }
 
-void ox_printtable(const ox_player *p1,const ox_player *p2,const char *squar,char blank)
+void ox_printtable(unsigned int val1,unsigned int val2,char ch1,char ch2,const char *squar,char blank)
 {
-	ox_printtable_tofile(p1,p2,stdout,squar,blank);
+	ox_printtable_tofile(val1,val2,ch1,ch2,stdout,squar,blank);
 }
 
-void ox_printtable_tofile(const ox_player *p1,const ox_player *p2,FILE *fp,const char *squar,char blank)
+void ox_printtable_tofile(unsigned int val1,unsigned int val2,char ch1,char ch2,FILE *fp,const char *squar,char blank)
 {
 	static char ch[OX_ROW*OX_COL];
 
@@ -46,13 +46,13 @@ void ox_printtable_tofile(const ox_player *p1,const ox_player *p2,FILE *fp,const
 
 	for(i=0;i<(OX_ROW*OX_COL);i++)
 	{
-		if((POW2A(i)&p1->val))
+		if((POW2A(i)&val1))
 		{
-			ch[i]=p1->ch;
+			ch[i]=ch1;
 		}
-		else if((POW2A(i)&p2->val))
+		else if((POW2A(i)&val2))
 		{
-			ch[i]=p2->ch;
+			ch[i]=ch2;
 		}
 		else
 		{

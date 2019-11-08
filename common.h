@@ -31,9 +31,9 @@ static const char *winby[]= {"\tP1 wins by [%u , %u , %u]\n","\tP2 win by [%u , 
 static const char KEYBARP2[]="%s (%c)> %c\n";
 static const char KEYBARP1[]="				%c <(%c) %s\n";
 
-static ox_player* newgame(ox_game *game,ox_player *wf,char ch1,char ch2,ox_player *p1,ox_player *p2)
+static ox_player* newgame(ox_game *game,ox_player *wf,ox_player *p1,ox_player *p2)
 {
-	ox_init(game,WINLIST,TRILIST,NWIN,NELEMENT,NTRI,NTRIELEMENT,ch1,ch2,p1,p2);
+	ox_init(game,WINLIST,TRILIST,NWIN,NELEMENT,NTRI,NTRIELEMENT,p1,p2);
 	
 	return (!wf) ? (ox_random(0,1) ?  p1 : p2) : wf ;
 

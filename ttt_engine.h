@@ -32,7 +32,6 @@ typedef struct
 {
 	unsigned int val;
 	unsigned int indexwin;
-	char ch;
 
 }ox_player;
 
@@ -60,7 +59,7 @@ int ox_iswillwin(const ox_game *game,const ox_player *p1,const ox_player *p2);
 int ox_triwin(const ox_game *_game,const ox_player *p1,const ox_player *p2); 
 
 void ox_init(ox_game *game,const void *winlist,const void *trilist,unsigned int nwin,unsigned int nelement,\
-unsigned int ntri,unsigned int ntrielement,char ch1,char ch2,ox_player *p1,ox_player *p2);
+unsigned int ntri,unsigned int ntrielement,ox_player *p1,ox_player *p2);
 
 
 
