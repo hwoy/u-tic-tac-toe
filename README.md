@@ -13,7 +13,8 @@ u3t is micro Tic-Tac-Toe game (or called Unbeatable Tic-Tac-Toe Game).
 
 Try it if you can!
 
-contact:
-<https://github.com/hwoy>
-bosskillerz@gmail.com
-www.facebook.com/watt.duean
+## Contact me
+
+- Web: <https://github.com/hwoy>
+- Email: zaintcorp@yahoo.com
+- Facebook: <http://www.facebook.com/dead-root>
