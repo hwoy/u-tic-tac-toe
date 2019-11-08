@@ -29,7 +29,7 @@ enum{
 
 static const char *opt[]={"-x","-o","-c:","-p2","-p1","-t",NULL};
 
-static const char *optstr[]={"P2 get X.","P2 get O (Default).","Custom (Default -c:OX).","P2 go first.","P1 go first.","WINLIST testing.",NULL};
+static const char *optstr[]={"P2 get X (Default).","P2 get O.","Custom (Default -c:OX).","P2 go first.","P1 go first.","WINLIST testing.",NULL};
 
 
 
