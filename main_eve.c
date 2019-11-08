@@ -19,7 +19,7 @@ int main(int argc,const char *argv[])
 
 	player=newgame(&game,player,&p1,&p2);
 
-	while(count<1)
+	do
 	{
 
 		ox_printtable(p1.val,p2.val,ch1,ch2,OX_SQUAR,CBLANK);
@@ -70,7 +70,7 @@ int main(int argc,const char *argv[])
 
 		}
 		
-	}
+	}while(count<1);
 
 	return 0;
 }
