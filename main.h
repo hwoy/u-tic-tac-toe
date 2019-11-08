@@ -35,22 +35,20 @@ static const char *optstr[]={"P2 get X (Default).","P2 get O.","Custom (Default 
 
 static void listtest(const unsigned int trilist[NTRI][NTRIELEMENT],unsigned int ntri,unsigned int ntrielement,char ch1,char ch2)
 {
-	unsigned int i,j,k;
-	unsigned int val1,val2;
-
-	val2=0;
+	unsigned int i,j;
+	unsigned int val1;
 
 	for(i=0;i<ntri;i++)
 	{
 		printf("%u:[",i);
-		for(j=0,k=0;j<ntrielement;j++)
+		for(j=0,val1=0;j<ntrielement;j++)
 		{
-			k|=POW2A(trilist[i][j]);
+			val1|=POW2A(trilist[i][j]);
 			printf(" %u ",trilist[i][j]);
 		}
-		printf("] = %u\n",k);
-		val1=k;
-		ox_printtable(val1,val2,ch1,ch2,OX_SQUAR,CBLANK);
+		printf("] = %u\n",val1);
+
+		ox_printtable(val1,0,ch1,ch2,OX_SQUAR,CBLANK);
 	}
 }
 
