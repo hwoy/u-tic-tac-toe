@@ -1,3 +1,5 @@
+![](https://raw.githubusercontent.com/hwoy/u-tic-tac-toe/master/res/pic1.png?raw=true)
+
 # u3t
 
 u3t is micro Tic-Tac-Toe game (or called Unbeatable Tic-Tac-Toe Game).
