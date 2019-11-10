@@ -47,8 +47,6 @@ typedef struct
 	
 }ox_game;
 
-typedef int (*ox_aigp)(ox_game *game,const ox_player *p1,const ox_player *p2);
-
 void ox_genpow2a(unsigned int *win,const void *winlist,unsigned int nwin,unsigned int nelement);
 unsigned int ox_log2a (unsigned int num);
 
@@ -69,6 +67,6 @@ unsigned int ox_random (unsigned int min,unsigned int max);
 
 int ox_testrandomselect(unsigned int test);
 ox_gameid ox_gameplay(ox_game *game,const ox_player *p1,ox_player *p2,unsigned int val);
-int ox_ai(ox_game *game,const ox_player *p1,const ox_player *p2);
+int ox_ai(const ox_game *game,const ox_player *p1,const ox_player *p2);
 
 #endif

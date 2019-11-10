@@ -219,7 +219,7 @@ ox_gameid ox_gameplay(ox_game *game,const ox_player *p1,ox_player *p2,unsigned i
 	return ox_idgame;
 }
 
-int ox_ai(ox_game *game,const ox_player *p1,const ox_player *p2)
+int ox_ai(const ox_game *game,const ox_player *p1,const ox_player *p2)
 {
 	int n;
 		
