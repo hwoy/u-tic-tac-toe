@@ -47,5 +47,9 @@ void ox_printtable_tofile(unsigned int val1,unsigned int val2,char ch1,char ch2,
 	for(i=0;i<(OX_ROW*OX_COL);i++)
 		ch[i] = ((POW2A(i)&val1)) ? ch1 : ((POW2A(i)&val2)) ? ch2 : blank ;
 
-	fprintf(fp,squar,ch[0],ch[1],ch[2],ch[3],ch[4],ch[5],ch[6],ch[7],ch[8]);
+	fprintf(fp,squar,
+	ch[0],ch[1],ch[2],
+	ch[3],ch[4],ch[5],
+	ch[6],ch[7],ch[8]
+	);
 }
