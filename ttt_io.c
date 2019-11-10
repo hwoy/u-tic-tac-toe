@@ -27,9 +27,7 @@ static void replacech(char *str,char ch,char rp)
 	for(i=0;str[i];i++)
 	{
 		if(str[i]==ch)
-		{
 			str[i]=rp;
-		}
 	}
 }
 
