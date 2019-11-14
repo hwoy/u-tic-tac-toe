@@ -25,7 +25,7 @@ static const char *G[]={"{ ^ _ ^ }","[ @ _ @ ]","[ * _ * ]",NULL};
 
 
 
-static const char *winpos[]={"\n<...... P1 %s Wins .....>\n","\n<...... P2 %s Wins .....>\n","\n<...... P1&P2 %s Draw .....>\n",NULL};
+static const char *winpos[]={"\n<...... P1 %s Wins ......>\n","\n<...... P2 %s Wins ......>\n","\n<...... P1&P2 %s Draw ......>\n",NULL};
 static const char *winby[]= {"\tP1 wins by [%u , %u , %u]\n","\tP2 win by [%u , %u , %u]\n",NULL};
 
 static const char KEYBARP2[]="%s (%c)> %c\n";
