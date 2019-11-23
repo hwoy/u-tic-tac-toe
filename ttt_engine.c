@@ -384,6 +384,11 @@ int ox_ai(const ox_game *game,const ox_player *p1,const ox_player *p2)
 					case POW2A(4)|POW2A(8):	return ox_testrandomselect(    SELECT(POW2A(2)|POW2A(6))	);
 					case POW2A(4)|POW2A(2):
 					case POW2A(4)|POW2A(6):	return ox_testrandomselect(    SELECT(POW2A(0)|POW2A(8))	);
+
+					case POW2A(1)|POW2A(5): if(!(p2->val & (POW2A(4) | POW2A(2))  )) return 6;break;
+					case POW2A(1)|POW2A(3): if(!(p2->val & (POW2A(4) | POW2A(0))  )) return 8;break;
+					case POW2A(3)|POW2A(7): if(!(p2->val & (POW2A(4) | POW2A(6))  )) return 2;break;
+					case POW2A(5)|POW2A(7): if(!(p2->val & (POW2A(4) | POW2A(8))  )) return 0;break;
 					
 				}
 				
