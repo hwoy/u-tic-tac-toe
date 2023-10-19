@@ -4,87 +4,79 @@
 
 #include "common.h"
 
+static const char TKEY[] = "[(%c)NewGame (%c)Exit, Choose(0-8)] (%c)> ";
+static const char AKEY[] = "\nPress any key to continue (%c)Exit -> ";
 
-static const char TKEY[]="[(%c)NewGame (%c)Exit, Choose(0-8)] (%c)> ";
-static const char AKEY[]="\nPress any key to continue (%c)Exit -> ";
-
-
-
-enum{
-	OPT_X,
-	OPT_O,
-	OPT_C,
-	OPT_P2,
-	OPT_P1,
-	OPT_T
+enum {
+    OPT_X,
+    OPT_O,
+    OPT_C,
+    OPT_P2,
+    OPT_P1,
+    OPT_T
 };
 
-enum{
-	K_EXIT = '-',
-	K_NEW = '+',
-	K_YES = 'y',
-	K_NO = 'n'
+enum {
+    K_EXIT = '-',
+    K_NEW = '+',
+    K_YES = 'y',
+    K_NO = 'n'
 };
 
+static const char* opt[] = { "-x", "-o", "-c:", "-p2", "-p1", "-t", NULL };
 
-static const char *opt[]={"-x","-o","-c:","-p2","-p1","-t",NULL};
+static const char* optstr[] = { "P2 get X (Default).", "P2 get O.", "Custom (Default -c:OX).", "P2 goes first.", "P1 goes first.", "WINLIST testing.", NULL };
 
-static const char *optstr[]={"P2 get X (Default).","P2 get O.","Custom (Default -c:OX).","P2 goes first.","P1 goes first.","WINLIST testing.",NULL};
-
-
-
-static void listtest(const unsigned int trilist[NTRI][NTRIELEMENT],unsigned int ntri,unsigned int ntrielement,char ch1,char ch2)
+static void listtest(const unsigned int trilist[NTRI][NTRIELEMENT], unsigned int ntri, unsigned int ntrielement, char ch1, char ch2)
 {
-	unsigned int i,j;
-	unsigned int val1;
+    unsigned int i, j;
+    unsigned int val1;
 
-	for(i=0;i<ntri;i++)
-	{
-		printf("%u:[",i);
-		for(j=0,val1=0;j<ntrielement;j++)
-		{
-			val1|=POW2A(trilist[i][j]);
-			printf(" %u ",trilist[i][j]);
-		}
-		printf("] = %u\n",val1);
+    for (i = 0; i < ntri; i++) {
+        printf("%u:[", i);
+        for (j = 0, val1 = 0; j < ntrielement; j++) {
+            val1 |= POW2A(trilist[i][j]);
+            printf(" %u ", trilist[i][j]);
+        }
+        printf("] = %u\n", val1);
 
-		ox_printtable(val1,0,ch1,ch2,OX_SQUAR,CBLANK);
-	}
+        ox_printtable(val1, 0, ch1, ch2, OX_SQUAR, CBLANK);
+    }
 }
 
-
-static const char *croppath(const char *path)
+static const char* croppath(const char* path)
 {
-	const char *gpath=path;
-	
-	for(;*path;++path) if(*path=='\\' || *path=='/') gpath = path+1;
+    const char* gpath = path;
 
-	return gpath;    
+    for (; *path; ++path)
+        if (*path == '\\' || *path == '/')
+            gpath = path + 1;
+
+    return gpath;
 }
 
-static int showhelp(const char *path,const char *opt[],const char *optstr[])
+static int showhelp(const char* path, const char* opt[], const char* optstr[])
 {
-	unsigned int i;
-	
-	fprintf(stderr,"\n%s is a Tic Tac Toe that you can not beat!.\n\n",path);
-	
-	for(i=0;opt[i] && optstr[i];++i)
-		fprintf(stderr,"%s\t=\t%s\n",opt[i],optstr[i]);
-		
-	return 1;
+    unsigned int i;
+
+    fprintf(stderr, "\n%s is a Tic Tac Toe that you can not beat!.\n\n", path);
+
+    for (i = 0; opt[i] && optstr[i]; ++i)
+        fprintf(stderr, "%s\t=\t%s\n", opt[i], optstr[i]);
+
+    return 1;
 }
 
-static char playerinput(const ox_player *player,char *buff,char ch)
+static char playerinput(const ox_player* player, char* buff, char ch)
 {
-	char tmp;
-	do
-	{
-		printf(TKEY,K_NEW,K_EXIT,ch);
-		tmp=ox_getch(buff,BSIZE,0);
-			
-	}while(strlen(buff)!=1);
+    char tmp;
+    do {
+        printf(TKEY, K_NEW, K_EXIT, ch);
+        tmp = ox_getch(buff, BSIZE, 0);
 
-	return tmp;
+    } while (strlen(buff) != 1);
+
+    return tmp;
 }
 
 #endif
