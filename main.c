@@ -98,7 +98,7 @@ int main(int argc, const char* argv[])
         else if (player == &p2)
             printf(KEYBARP2, G[0], ch2, ch);
 
-        gameid = player == &p1 ? ox_gameplay(&game, &p2, &p1, ch - '0') : ox_gameplay(&game, &p1, &p2, ch - '0');
+        gameid = ox_gameplay(&game, player != &p1 ? &p1 : &p2, player, ch - '0');
 
         switch (gameid) {
         case ox_idwin:
@@ -109,8 +109,10 @@ int main(int argc, const char* argv[])
 
             printf(winpos[index], G[index]);
 
-            if (gameid == ox_idwin)
-                printf(winby[index], WINLIST[player->indexwin][0], WINLIST[player->indexwin][1], WINLIST[player->indexwin][2]);
+            if (gameid == ox_idwin) {
+                const unsigned int indexwin = ox_iswin(&game, player);
+                printf(winby[index], WINLIST[indexwin][0], WINLIST[indexwin][1], WINLIST[indexwin][2]);
+            }
 
             printf(AKEY, K_EXIT);
             if (ox_getch(buff, BSIZE, 0) == K_EXIT) {

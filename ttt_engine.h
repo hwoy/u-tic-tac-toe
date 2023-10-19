@@ -29,7 +29,6 @@ typedef enum {
 typedef struct
 {
     unsigned int val;
-    unsigned int indexwin;
 
 } ox_player;
 
@@ -60,7 +59,7 @@ unsigned int ox_rand(void);
 unsigned int ox_random(unsigned int min, unsigned int max);
 
 int ox_testrandomselect(unsigned int test);
-ox_gameid ox_gameplay(ox_game* game, const ox_player* p1, ox_player* p2, unsigned int val);
+ox_gameid ox_gameplay(const ox_game* game, const ox_player* p1, ox_player* p2, unsigned int val);
 int ox_ai(const ox_game* game, const ox_player* p1, const ox_player* p2);
 
 #endif

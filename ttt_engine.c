@@ -154,10 +154,8 @@ void ox_init(ox_game* game, const void* winlist, const void* trilist, unsigned i
     unsigned int ntri, unsigned int ntrielement, ox_player* p1, ox_player* p2)
 {
     p1->val = 0;
-    p1->indexwin = 0;
 
     p2->val = 0;
-    p2->indexwin = 0;
 
     game->nwin = nwin;
     game->nelement = nelement;
@@ -181,7 +179,7 @@ int ox_testrandomselect(unsigned int test)
     return j > 0 ? buff[ox_random(0, j - 1)] : -1;
 }
 
-ox_gameid ox_gameplay(ox_game* game, const ox_player* p1, ox_player* p2, unsigned int val)
+ox_gameid ox_gameplay(const ox_game* game, const ox_player* p1, ox_player* p2, unsigned int val)
 {
     int i;
 
@@ -196,7 +194,6 @@ ox_gameid ox_gameplay(ox_game* game, const ox_player* p1, ox_player* p2, unsigne
     p2->val |= POW2A(val);
 
     if ((i = ox_iswin(game, p2)) > -1) {
-        p2->indexwin = i;
         return ox_idwin;
     }
 
