@@ -2,6 +2,8 @@
 
 #define __TTT_ENGINE_H__
 
+#include "glibcrng.h"
+
 #define NWIN 8
 #define NELEMENT 3
 
@@ -34,13 +36,15 @@ typedef struct
 
 typedef struct
 {
-
+    GLIBCRNG random;
     unsigned int win[NWIN];
     unsigned int tri[NTRI];
     unsigned int nwin, ntri;
     unsigned int nelement, ntrielement;
 
 } ox_game;
+
+ox_game ox_creatgame(unsigned int seed);
 
 void ox_genpow2a(unsigned int* win, const void* winlist, unsigned int nwin, unsigned int nelement);
 unsigned int ox_log2a(unsigned int num);
@@ -54,12 +58,11 @@ int ox_triwin(const ox_game* _game, const ox_player* p1, const ox_player* p2);
 void ox_init(ox_game* game, const void* winlist, const void* trilist, unsigned int nwin, unsigned int nelement,
     unsigned int ntri, unsigned int ntrielement, ox_player* p1, ox_player* p2);
 
-void ox_srandom(void);
-unsigned int ox_rand(void);
-unsigned int ox_random(unsigned int min, unsigned int max);
+unsigned int ox_rand(ox_game* game);
+unsigned int ox_random(ox_game* game, unsigned int min, unsigned int max);
 
-int ox_testrandomselect(unsigned int test);
+int ox_testrandomselect(ox_game* game, unsigned int test);
 ox_gameid ox_gameplay(const ox_game* game, const ox_player* p1, ox_player* p2, unsigned int val);
-int ox_ai(const ox_game* game, const ox_player* p1, const ox_player* p2);
+int ox_ai(ox_game* game, const ox_player* p1, const ox_player* p2);
 
 #endif

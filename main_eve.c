@@ -1,3 +1,5 @@
+#include <time.h>
+
 #include "common.h"
 
 int main(int argc, const char* argv[])
@@ -5,7 +7,7 @@ int main(int argc, const char* argv[])
     unsigned int index, count = 0;
     char ch;
     ox_gameid gameid;
-    ox_game game;
+    ox_game game = ox_creatgame(time(NULL));
 
     /*====================== Init default values =======================*/
     ox_player p1, p2;
@@ -13,8 +15,6 @@ int main(int argc, const char* argv[])
 
     char ch1 = CH_O;
     char ch2 = CH_X;
-
-    ox_srandom();
 
     player = newgame(&game, player, &p1, &p2);
 

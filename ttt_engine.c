@@ -1,11 +1,6 @@
 #include "ttt_engine.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-
-#ifdef _DEVRAND_
-static const char DEVRAND[] = "/dev/random";
-#endif
 
 unsigned int ox_log2a(unsigned int num)
 {
@@ -121,33 +116,22 @@ int ox_triwin(const ox_game* _game, const ox_player* p1, const ox_player* _p2)
     return -1;
 }
 
-void ox_srandom(void)
-{
-    srand(time(NULL));
-}
-
 unsigned int
-ox_rand(void)
+ox_rand(ox_game* game)
 {
-#ifdef _DEVRAND_
-    FILE* fp;
-    unsigned int i, j, k;
-    fp = fopen(DEVRAND, "rb");
-    if (!fp)
-        return 0;
-    for (k = 0, j = 0; j < sizeof(i); j += sizeof(char), k++)
-        ((char*)&i)[k] = fgetc(fp);
-
-    fclose(fp);
-    return i;
-#else
-    return rand();
-#endif
+    return glibcrng(game->random);
 }
 
-unsigned int ox_random(unsigned int min, unsigned int max)
+unsigned int ox_random(ox_game* game, unsigned int min, unsigned int max)
 {
-    return min <= max ? min + (ox_rand() % (max - min + 1)) : -1;
+    return min <= max ? min + (ox_rand(game) % (max - min + 1)) : -1;
+}
+
+ox_game ox_creatgame(unsigned int seed)
+{
+    ox_game game;
+    glibcrnginit(game.random, seed);
+    return game;
 }
 
 void ox_init(ox_game* game, const void* winlist, const void* trilist, unsigned int nwin, unsigned int nelement,
@@ -166,7 +150,7 @@ void ox_init(ox_game* game, const void* winlist, const void* trilist, unsigned i
     ox_genpow2a(game->tri, trilist, ntri, ntrielement);
 }
 
-int ox_testrandomselect(unsigned int test)
+int ox_testrandomselect(ox_game* game, unsigned int test)
 {
     int buff[9], j, i;
 
@@ -176,7 +160,7 @@ int ox_testrandomselect(unsigned int test)
         }
     }
 
-    return j > 0 ? buff[ox_random(0, j - 1)] : -1;
+    return j > 0 ? buff[ox_random(game, 0, j - 1)] : -1;
 }
 
 ox_gameid ox_gameplay(const ox_game* game, const ox_player* p1, ox_player* p2, unsigned int val)
@@ -204,7 +188,7 @@ ox_gameid ox_gameplay(const ox_game* game, const ox_player* p1, ox_player* p2, u
     return ox_idgame;
 }
 
-int ox_ai(const ox_game* game, const ox_player* p1, const ox_player* p2)
+int ox_ai(ox_game* game, const ox_player* p1, const ox_player* p2)
 {
     int n;
 
@@ -217,13 +201,13 @@ int ox_ai(const ox_game* game, const ox_player* p1, const ox_player* p2)
     switch (ox_getbit(p1->val | p2->val)) {
 
     case 0:
-        switch (ox_random(1, 7)) {
+        switch (ox_random(game, 1, 7)) {
         case 1:
         case 2:
         case 3:
-            return ox_testrandomselect(SELECT(POW2A(0) | POW2A(2) | POW2A(6) | POW2A(8))); /* Border delta strategy */
+            return ox_testrandomselect(game, SELECT(POW2A(0) | POW2A(2) | POW2A(6) | POW2A(8))); /* Border delta strategy */
         case 4:
-            return ox_testrandomselect(SELECT(POW2A(1) | POW2A(3) | POW2A(5) | POW2A(7))); /* Small delta strategy & Cross strategy */
+            return ox_testrandomselect(game, SELECT(POW2A(1) | POW2A(3) | POW2A(5) | POW2A(7))); /* Small delta strategy & Cross strategy */
         case 5:
         case 6:
         default:
@@ -273,10 +257,10 @@ int ox_ai(const ox_game* game, const ox_player* p1, const ox_player* p2)
 
             case 1: /*      will be Punished         */
             case 3:
-                return ox_testrandomselect(SELECT(POW2A(6) | POW2A(8))); /*      will be Punished         */
+                return ox_testrandomselect(game, SELECT(POW2A(6) | POW2A(8))); /*      will be Punished         */
             case 5: /*      will be Punished         */
             case 7:
-                return ox_testrandomselect(SELECT(POW2A(0) | POW2A(2))); /*      will be Punished         */
+                return ox_testrandomselect(game, SELECT(POW2A(0) | POW2A(2))); /*      will be Punished         */
             }
         }
 
@@ -285,13 +269,13 @@ int ox_ai(const ox_game* game, const ox_player* p1, const ox_player* p2)
             if (p1->val == POW2A(4)) {
                 switch (p2->val) {
                 case POW2A(0):
-                    return ox_testrandomselect(SELECT(POW2A(8) | POW2A(7) | POW2A(5)));
+                    return ox_testrandomselect(game, SELECT(POW2A(8) | POW2A(7) | POW2A(5)));
                 case POW2A(2):
-                    return ox_testrandomselect(SELECT(POW2A(6) | POW2A(7) | POW2A(3)));
+                    return ox_testrandomselect(game, SELECT(POW2A(6) | POW2A(7) | POW2A(3)));
                 case POW2A(6):
-                    return ox_testrandomselect(SELECT(POW2A(2) | POW2A(1) | POW2A(5)));
+                    return ox_testrandomselect(game, SELECT(POW2A(2) | POW2A(1) | POW2A(5)));
                 case POW2A(8):
-                    return ox_testrandomselect(SELECT(POW2A(0) | POW2A(1) | POW2A(3)));
+                    return ox_testrandomselect(game, SELECT(POW2A(0) | POW2A(1) | POW2A(3)));
                 }
             }
             /*Border delta*/
@@ -299,19 +283,19 @@ int ox_ai(const ox_game* game, const ox_player* p1, const ox_player* p2)
             else if (p1->val & (POW2A(0) | POW2A(2) | POW2A(6) | POW2A(8))) {
                 switch (p2->val | p1->val) {
                 case POW2A(0) | POW2A(2):
-                    return ox_testrandomselect(SELECT(POW2A(6) | POW2A(8)));
+                    return ox_testrandomselect(game, SELECT(POW2A(6) | POW2A(8)));
                 case POW2A(6) | POW2A(8):
-                    return ox_testrandomselect(SELECT(POW2A(0) | POW2A(2)));
+                    return ox_testrandomselect(game, SELECT(POW2A(0) | POW2A(2)));
 
                 case POW2A(0) | POW2A(6):
-                    return ox_testrandomselect(SELECT(POW2A(2) | POW2A(8)));
+                    return ox_testrandomselect(game, SELECT(POW2A(2) | POW2A(8)));
                 case POW2A(2) | POW2A(8):
-                    return ox_testrandomselect(SELECT(POW2A(0) | POW2A(6)));
+                    return ox_testrandomselect(game, SELECT(POW2A(0) | POW2A(6)));
 
                 case POW2A(2) | POW2A(6):
-                    return ox_testrandomselect(SELECT(POW2A(0) | POW2A(8)));
+                    return ox_testrandomselect(game, SELECT(POW2A(0) | POW2A(8)));
                 case POW2A(0) | POW2A(8):
-                    return ox_testrandomselect(SELECT(POW2A(2) | POW2A(6)));
+                    return ox_testrandomselect(game, SELECT(POW2A(2) | POW2A(6)));
 
                 /*Border delta or Small delta can beat*/
                 default:
@@ -325,35 +309,35 @@ int ox_ai(const ox_game* game, const ox_player* p1, const ox_player* p2)
                 switch (p2->val | p1->val) {
                 case POW2A(8) | POW2A(5):
                 case POW2A(0) | POW2A(1):
-                    return ox_testrandomselect(SELECT(POW2A(4) | POW2A(6)));
+                    return ox_testrandomselect(game, SELECT(POW2A(4) | POW2A(6)));
 
                 case POW2A(8) | POW2A(7):
                 case POW2A(0) | POW2A(3):
-                    return ox_testrandomselect(SELECT(POW2A(4) | POW2A(2)));
+                    return ox_testrandomselect(game, SELECT(POW2A(4) | POW2A(2)));
 
                 case POW2A(6) | POW2A(3):
                 case POW2A(2) | POW2A(1):
-                    return ox_testrandomselect(SELECT(POW2A(4) | POW2A(8)));
+                    return ox_testrandomselect(game, SELECT(POW2A(4) | POW2A(8)));
 
                 case POW2A(6) | POW2A(7):
                 case POW2A(2) | POW2A(5):
-                    return ox_testrandomselect(SELECT(POW2A(4) | POW2A(0)));
+                    return ox_testrandomselect(game, SELECT(POW2A(4) | POW2A(0)));
 
                 case POW2A(0) | POW2A(5):
                 case POW2A(0) | POW2A(7):
-                    return ox_testrandomselect(SELECT(POW2A(0) | POW2A(2) | POW2A(4) | POW2A(6) | POW2A(8)) EXCEPT((p2->val) | POW2A(8)));
+                    return ox_testrandomselect(game, SELECT(POW2A(0) | POW2A(2) | POW2A(4) | POW2A(6) | POW2A(8)) EXCEPT((p2->val) | POW2A(8)));
 
                 case POW2A(2) | POW2A(3):
                 case POW2A(2) | POW2A(7):
-                    return ox_testrandomselect(SELECT(POW2A(0) | POW2A(2) | POW2A(4) | POW2A(6) | POW2A(8)) EXCEPT((p2->val) | POW2A(6)));
+                    return ox_testrandomselect(game, SELECT(POW2A(0) | POW2A(2) | POW2A(4) | POW2A(6) | POW2A(8)) EXCEPT((p2->val) | POW2A(6)));
 
                 case POW2A(6) | POW2A(1):
                 case POW2A(6) | POW2A(5):
-                    return ox_testrandomselect(SELECT(POW2A(0) | POW2A(2) | POW2A(4) | POW2A(6) | POW2A(8)) EXCEPT((p2->val) | POW2A(2)));
+                    return ox_testrandomselect(game, SELECT(POW2A(0) | POW2A(2) | POW2A(4) | POW2A(6) | POW2A(8)) EXCEPT((p2->val) | POW2A(2)));
 
                 case POW2A(8) | POW2A(1):
                 case POW2A(8) | POW2A(3):
-                    return ox_testrandomselect(SELECT(POW2A(0) | POW2A(2) | POW2A(4) | POW2A(6) | POW2A(8)) EXCEPT((p2->val) | POW2A(0)));
+                    return ox_testrandomselect(game, SELECT(POW2A(0) | POW2A(2) | POW2A(4) | POW2A(6) | POW2A(8)) EXCEPT((p2->val) | POW2A(0)));
                 }
             }
 
@@ -364,15 +348,15 @@ int ox_ai(const ox_game* game, const ox_player* p1, const ox_player* p2)
         switch (ox_log2a(p1->val)) {
         /* Cross strategy defensive*/
         case 1:
-            return ox_testrandomselect(SELECT(POW2A(0) | POW2A(2) | POW2A(6) | POW2A(8) | POW2A(4)) EXCEPT(POW2A(6) | POW2A(8)));
+            return ox_testrandomselect(game, SELECT(POW2A(0) | POW2A(2) | POW2A(6) | POW2A(8) | POW2A(4)) EXCEPT(POW2A(6) | POW2A(8)));
         case 5:
-            return ox_testrandomselect(SELECT(POW2A(0) | POW2A(2) | POW2A(6) | POW2A(8) | POW2A(4)) EXCEPT(POW2A(0) | POW2A(6)));
+            return ox_testrandomselect(game, SELECT(POW2A(0) | POW2A(2) | POW2A(6) | POW2A(8) | POW2A(4)) EXCEPT(POW2A(0) | POW2A(6)));
         case 7:
-            return ox_testrandomselect(SELECT(POW2A(0) | POW2A(2) | POW2A(6) | POW2A(8) | POW2A(4)) EXCEPT(POW2A(0) | POW2A(2)));
+            return ox_testrandomselect(game, SELECT(POW2A(0) | POW2A(2) | POW2A(6) | POW2A(8) | POW2A(4)) EXCEPT(POW2A(0) | POW2A(2)));
         case 3:
-            return ox_testrandomselect(SELECT(POW2A(0) | POW2A(2) | POW2A(6) | POW2A(8) | POW2A(4)) EXCEPT(POW2A(2) | POW2A(8)));
+            return ox_testrandomselect(game, SELECT(POW2A(0) | POW2A(2) | POW2A(6) | POW2A(8) | POW2A(4)) EXCEPT(POW2A(2) | POW2A(8)));
         case 4:
-            return ox_testrandomselect(SELECT(POW2A(0) | POW2A(2) | POW2A(6) | POW2A(8))); /* Center delta defendsive*/
+            return ox_testrandomselect(game, SELECT(POW2A(0) | POW2A(2) | POW2A(6) | POW2A(8))); /* Center delta defendsive*/
         default:
             return 4; /* Border delta defendsive*/
         }
@@ -382,15 +366,15 @@ int ox_ai(const ox_game* game, const ox_player* p1, const ox_player* p2)
         /* Border delta defendsive */
         case POW2A(2) | POW2A(6):
         case POW2A(0) | POW2A(8):
-            return ox_testrandomselect(SELECT(POW2A(1) | POW2A(3) | POW2A(5) | POW2A(7)));
+            return ox_testrandomselect(game, SELECT(POW2A(1) | POW2A(3) | POW2A(5) | POW2A(7)));
 
         /* Center delta or Border delta defendsive */
         case POW2A(4) | POW2A(0):
         case POW2A(4) | POW2A(8):
-            return ox_testrandomselect(SELECT(POW2A(2) | POW2A(6)));
+            return ox_testrandomselect(game, SELECT(POW2A(2) | POW2A(6)));
         case POW2A(4) | POW2A(2):
         case POW2A(4) | POW2A(6):
-            return ox_testrandomselect(SELECT(POW2A(0) | POW2A(8)));
+            return ox_testrandomselect(game, SELECT(POW2A(0) | POW2A(8)));
 
         case POW2A(1) | POW2A(5):
             if (!(p2->val & (POW2A(4) | POW2A(2))))
@@ -416,7 +400,7 @@ int ox_ai(const ox_game* game, const ox_player* p1, const ox_player* p2)
     case 7:
     case 8:
         return ((n = ox_triwin(game, p2, p1)) != -1) ? n : ((n = ox_triwin(game, p1, p2)) != -1) ? n
-                                                                                                 : ox_testrandomselect(p1->val | p2->val);
+                                                                                                 : ox_testrandomselect(game, p1->val | p2->val);
     }
 
     return -1;

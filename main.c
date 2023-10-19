@@ -1,5 +1,7 @@
-#include "main.h"
+#include <time.h>
+
 #include "function.h"
+#include "main.h"
 #include "opt.h"
 
 int main(int argc, const char* argv[])
@@ -8,7 +10,7 @@ int main(int argc, const char* argv[])
     char ch, ch_yn;
     unsigned int index;
     ox_gameid gameid;
-    ox_game game;
+    ox_game game = ox_creatgame(time(NULL));
 
     /*====================== Init default values =======================*/
     ox_player p1, p2;
@@ -60,7 +62,6 @@ int main(int argc, const char* argv[])
     }
 
     /*====================== End of Parameters Processing ======================*/
-    ox_srandom();
 
     player = newgame(&game, player, &p1, &p2);
 

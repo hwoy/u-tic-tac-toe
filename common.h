@@ -31,7 +31,7 @@ static ox_player* newgame(ox_game* game, ox_player* wf, ox_player* p1, ox_player
 {
     ox_init(game, WINLIST, TRILIST, NWIN, NELEMENT, NTRI, NTRIELEMENT, p1, p2);
 
-    return (!wf) ? (ox_random(0, 1) ? p1 : p2) : wf;
+    return (!wf) ? (ox_random(game, 0, 1) ? p1 : p2) : wf;
 }
 
 #endif
