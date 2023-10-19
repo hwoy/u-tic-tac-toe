@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -g -std=c99 -pedantic -Wall
+CFLAGS = -O2 -std=c99 -pedantic -Wall
 bin = u3t
 bin_pvp = $(bin)_pvp
 bin_eve = $(bin)_eve

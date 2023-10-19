@@ -1,5 +1,4 @@
 #ifndef __TTT_ENGINE_H__
-
 #define __TTT_ENGINE_H__
 
 #include "glibcrng.h"
