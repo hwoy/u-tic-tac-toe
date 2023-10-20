@@ -130,6 +130,7 @@ unsigned int ox_random(ox_game* game, unsigned int min, unsigned int max)
 ox_game ox_creatgame(unsigned int seed)
 {
     ox_game game;
+    game.id = seed;
     glibcrnginit(game.random, seed);
     return game;
 }
@@ -137,8 +138,10 @@ ox_game ox_creatgame(unsigned int seed)
 void ox_init(ox_game* game, const void* winlist, const void* trilist, unsigned int nwin, unsigned int nelement,
     unsigned int ntri, unsigned int ntrielement, ox_player* p1, ox_player* p2)
 {
+    p1->id = 0;
     p1->val = 0;
 
+    p2->id = 0;
     p2->val = 0;
 
     game->nwin = nwin;

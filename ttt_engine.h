@@ -29,12 +29,14 @@ typedef enum {
 
 typedef struct
 {
+    unsigned int id;
     unsigned int val;
 
 } ox_player;
 
 typedef struct
 {
+    unsigned int id;
     GLIBCRNG random;
     unsigned int win[NWIN];
     unsigned int tri[NTRI];
