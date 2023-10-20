@@ -5,7 +5,7 @@ bin = u3t
 bin_pvp = $(bin)_pvp
 bin_eve = $(bin)_eve
 
-.PHONY: all clean lib
+.PHONY: all clean
 
 all: $(bin) $(bin_pvp) $(bin_eve) libttt.a
 
@@ -42,11 +42,8 @@ opt.o: opt.c
 glibcrng.o: glibcrng.c
 
 
-libttt.a: ttt_io.o
-	AR crv libttt.a ttt_io.o
-
-lib: libttt.a
-	
+libttt.a: ttt_engine.o glibcrng.o
+	AR crv libttt.a ttt_engine.o glibcrng.o
 
 
 clean:
