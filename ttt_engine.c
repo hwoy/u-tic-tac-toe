@@ -141,7 +141,7 @@ void ox_init(ox_game* game, const void* winlist, const void* trilist, unsigned i
     p1->id = 0;
     p1->val = 0;
 
-    p2->id = 0;
+    p2->id = 1;
     p2->val = 0;
 
     game->nwin = nwin;
