@@ -1,12 +1,13 @@
 CC = gcc
+AR = ar
 CFLAGS = -O2 -std=c99 -pedantic -Wall
 bin = u3t
 bin_pvp = $(bin)_pvp
 bin_eve = $(bin)_eve
 
-.PHONY: all clean
+.PHONY: all clean lib
 
-all: $(bin) $(bin_pvp) $(bin_eve)
+all: $(bin) $(bin_pvp) $(bin_eve) libttt.a
 
 $(bin): main.o ttt_engine.o ttt_io.o function.o opt.o glibcrng.o
 	$(CC) -o $(bin) main.o ttt_engine.o ttt_io.o function.o opt.o glibcrng.o
@@ -41,6 +42,13 @@ opt.o: opt.c
 glibcrng.o: glibcrng.c
 
 
+libttt.a: ttt_io.o
+	AR crv libttt.a ttt_io.o
+
+lib: libttt.a
+	
+
+
 clean:
-	rm -rf *.o $(bin) $(bin_pvp) $(bin_eve) *~ *.log *.exe
+	rm -rf *.o $(bin) $(bin_pvp) $(bin_eve) *~ *.log *.exe *.a
 
