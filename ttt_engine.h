@@ -12,7 +12,7 @@
 #define OX_ROW 3
 #define OX_COL 3
 
-#define POW2A(x) (1 << (x))
+#define POW2A(x) (1UL << (x))
 
 #define ALLBIT (POW2A(0) | POW2A(1) | POW2A(2) | POW2A(3) | POW2A(4) | POW2A(5) | POW2A(6) | POW2A(7) | POW2A(8))
 #define SELECT(x) (ALLBIT ^ (x))

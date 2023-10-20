@@ -124,7 +124,7 @@ ox_rand(ox_game* game)
 
 unsigned int ox_random(ox_game* game, unsigned int min, unsigned int max)
 {
-    return min <= max ? min + (ox_rand(game) % (max - min + 1)) : -1;
+    return min <= max ? min + (ox_rand(game) % (max - min + 1)) : -1UL;
 }
 
 ox_game ox_creatgame(unsigned int seed)
