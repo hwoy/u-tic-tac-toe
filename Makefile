@@ -43,7 +43,7 @@ glibcrng.o: glibcrng.c
 
 
 libttt.a: ttt_engine.o glibcrng.o
-	AR crv libttt.a ttt_engine.o glibcrng.o
+	$(AR) crv libttt.a ttt_engine.o glibcrng.o
 
 
 clean:

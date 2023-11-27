@@ -1,8 +1,8 @@
 #ifndef __GLIBCRNG_H__
 #define __GLIBCRNG_H__
 
-typedef unsigned long URND32;
-typedef long RND32;
+typedef unsigned int URND32;
+typedef int RND32;
 
 typedef RND32 GLIBCRNGOBJECT;
 typedef GLIBCRNGOBJECT GLIBCRNG[31];
